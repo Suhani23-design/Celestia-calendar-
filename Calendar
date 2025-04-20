@@ -1,0 +1,136 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Celestial Calendar</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Orbitron', sans-serif;
+      background: url('https://images.unsplash.com/photo-1587614382346-4ec76c34a597?auto=format&fit=crop&w=1740&q=80') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      overflow-x: hidden;
+    }
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+      padding: 40px;
+      backdrop-filter: blur(10px);
+    }
+    .day {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+      transition: 0.3s;
+    }
+    .day:hover {
+      background: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+    }
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.8);
+      padding: 30px;
+      border-radius: 15px;
+      display: none;
+      z-index: 10;
+    }
+    .popup h2 {
+      margin-top: 0;
+      font-size: 1.5em;
+    }
+    .popup p {
+      margin: 10px 0;
+    }
+    .close-btn {
+      margin-top: 15px;
+      background: #ff69b4;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .stars {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      animation: twinkle 2s infinite ease-in-out;
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="stars"></div>
+  <div class="calendar" id="calendar"></div>  <div class="popup" id="popup">
+    <h2 id="popup-date">April X</h2>
+    <p><strong>Mood:</strong> <span id="popup-mood">Calm</span></p>
+    <p><strong>Tasks Done:</strong> <span id="popup-tasks">2</span></p>
+    <p><strong>Song:</strong> <span id="popup-song">Dream Glow</span></p>
+    <button class="close-btn" onclick="closePopup()">Close</button>
+  </div>  <script>
+    const calendar = document.getElementById('calendar');
+    const popup = document.getElementById('popup');
+    const popupDate = document.getElementById('popup-date');
+    const popupMood = document.getElementById('popup-mood');
+    const popupTasks = document.getElementById('popup-tasks');
+    const popupSong = document.getElementById('popup-song');
+
+    const data = {
+      1: { mood: 'Peaceful', tasks: 3, song: 'Astronaut in the Ocean' },
+      2: { mood: 'Energetic', tasks: 2, song: 'Levitating' },
+      3: { mood: 'Lazy', tasks: 1, song: 'Ocean Eyes' },
+      4: { mood: 'Focused', tasks: 4, song: 'Runaway' },
+    };
+
+    for (let i = 1; i <= 30; i++) {
+      const day = document.createElement('div');
+      day.className = 'day';
+      day.innerText = i;
+      day.onclick = () => {
+        const d = data[i] || { mood: 'Unknown', tasks: 0, song: 'None' };
+        popupDate.innerText = `April ${i}`;
+        popupMood.innerText = d.mood;
+        popupTasks.innerText = d.tasks;
+        popupSong.innerText = d.song;
+        popup.style.display = 'block';
+      };
+      calendar.appendChild(day);
+    }
+
+    function closePopup() {
+      popup.style.display = 'none';
+    }
+
+    // Star generator
+    for (let i = 0; i < 150; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.left = Math.random() * 100 + '%';
+      document.querySelector('.stars').appendChild(star);
+    }
+  </script></body>
+</html>
